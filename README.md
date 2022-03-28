@@ -1,9 +1,9 @@
-# User Management Service
+# Testing massbit staking
 
 ## Start prod
 
 ```
-pm2 start npm --name "massbit-portal" -- run start
+pm2 start npm --name "test-massbit-staking" -- run start
 ```
 
 ## Setup
