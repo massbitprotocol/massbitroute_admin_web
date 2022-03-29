@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'massbit-staking-service',
-      script: 'dist/src/main.js',
+      script: 'dist/main.js',
       instances: 1,
       exec_mode: 'cluster',
       kill_timeout: 10000,
