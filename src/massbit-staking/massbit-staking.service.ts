@@ -30,11 +30,12 @@ export class MassbitStakingService implements OnModuleInit {
     keyring.setSS58Format(42);
 
     const newPair = keyring.addFromUri(stakingDto.memonic);
+
     const excuteStaking = new Promise(async (resolve, reject) => {
       const unsub = await this.api.tx.dapi
         .registerProvider(
           stakingDto.providerId,
-          'Gateway',
+          stakingDto.providerType,
           `${stakingDto.blockchain}-${stakingDto.network}`,
         )
         .signAndSend(newPair, ({ status, events = [], dispatchError }) => {

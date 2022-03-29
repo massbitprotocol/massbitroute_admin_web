@@ -1,5 +1,9 @@
 import { IsString, IsUUID } from 'class-validator';
 
+enum ProviderType {
+  GATEWAY = 'Gateway',
+  NODE = 'Node',
+}
 export class StakingDto {
   @IsString()
   memonic: string;
@@ -8,7 +12,7 @@ export class StakingDto {
   providerId: string;
 
   @IsString()
-  providerType: string;
+  providerType: ProviderType;
 
   @IsString()
   blockchain: string;
