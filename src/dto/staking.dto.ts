@@ -15,6 +15,9 @@ export class StakingDto {
   providerType: ProviderType;
 
   @IsString()
+  amount: string;
+
+  @IsString()
   blockchain: string;
 
   @IsString()

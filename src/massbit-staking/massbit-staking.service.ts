@@ -30,6 +30,7 @@ export class MassbitStakingService implements OnModuleInit {
     keyring.setSS58Format(42);
 
     const newPair = keyring.addFromUri(stakingDto.memonic);
+    console.log('address :>> ', newPair.address);
     console.log(
       'chainid :>> ',
       `${stakingDto.blockchain}.${stakingDto.network}`,
@@ -40,6 +41,7 @@ export class MassbitStakingService implements OnModuleInit {
           stakingDto.providerId,
           stakingDto.providerType,
           `${stakingDto.blockchain}.${stakingDto.network}`,
+          `${stakingDto.amount}000000000000000000`,
         )
         .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
           if (status.isFinalized) {
@@ -66,6 +68,9 @@ export class MassbitStakingService implements OnModuleInit {
             unsub();
             resolve(true);
           }
+        })
+        .catch((err) => {
+          throw new BadRequestException(err);
         });
     });
 

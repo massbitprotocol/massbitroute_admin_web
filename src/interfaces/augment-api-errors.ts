@@ -44,9 +44,7 @@ declare module '@polkadot/api-base/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
     dapi: {
-      AlreadyCreatedChainId: AugmentedError<ApiType>;
-      AlreadyRegistered: AugmentedError<ApiType>;
-      InsufficientBoding: AugmentedError<ApiType>;
+      AlreadyExist: AugmentedError<ApiType>;
       InvalidChainId: AugmentedError<ApiType>;
       NotFisherman: AugmentedError<ApiType>;
       NotOperatedProvider: AugmentedError<ApiType>;
@@ -210,6 +208,16 @@ declare module '@polkadot/api-base/types/errors' {
        * and the new runtime.
        **/
       SpecVersionNeedsToIncrease: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    utility: {
+      /**
+       * Too many calls batched.
+       **/
+      TooManyCalls: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
