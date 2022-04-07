@@ -1,18 +1,31 @@
-import { StakingDto } from '@massbit/dto/staking.dto';
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
+
+import { StakingDto, StakingProjectDto } from '@massbit/dto/staking.dto';
 import { MassbitStakingService } from './massbit-staking.service';
 
 @Controller('massbit')
 export class MassbitStakingController {
   constructor(private stakingService: MassbitStakingService) {}
 
-  @Post('/staking')
-  async staking(
+  @Post('/staking-provider')
+  async stakingProvider(
     @Res() res: Response,
     @Body() stakingDto: StakingDto,
   ): Promise<any> {
-    await this.stakingService.staking(stakingDto);
+    await this.stakingService.stakingProvider(stakingDto);
+
+    return res.json({
+      status: 'success',
+    });
+  }
+
+  @Post('/staking-project')
+  async stakingProject(
+    @Res() res: Response,
+    @Body() stakingDto: StakingProjectDto,
+  ): Promise<any> {
+    await this.stakingService.stakingProject(stakingDto);
 
     return res.json({
       status: 'success',

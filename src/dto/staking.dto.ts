@@ -23,3 +23,20 @@ export class StakingDto {
   @IsString()
   network: string;
 }
+
+export class StakingProjectDto {
+  @IsString()
+  memonic: string;
+
+  @IsUUID()
+  projectId: string;
+
+  @IsString()
+  amount: string;
+
+  @IsString()
+  blockchain: string;
+
+  @IsString()
+  network: string;
+}
