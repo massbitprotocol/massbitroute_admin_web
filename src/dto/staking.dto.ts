@@ -12,16 +12,7 @@ export class StakingDto {
   providerId: string;
 
   @IsString()
-  providerType: ProviderType;
-
-  @IsString()
   amount: string;
-
-  @IsString()
-  blockchain: string;
-
-  @IsString()
-  network: string;
 }
 
 export class StakingProjectDto {

@@ -43,15 +43,45 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    blockReward: {
+      /**
+       * Sum of all rations must be one whole (100%)
+       **/
+      InvalidDistributionConfiguration: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     dapi: {
+      /**
+       * The provider/project is already registered.
+       **/
       AlreadyExist: AugmentedError<ApiType>;
-      InvalidChainId: AugmentedError<ApiType>;
-      NotFisherman: AugmentedError<ApiType>;
-      NotOperatedProvider: AugmentedError<ApiType>;
-      NotOracle: AugmentedError<ApiType>;
-      NotOwnedProvider: AugmentedError<ApiType>;
-      ProjectDNE: AugmentedError<ApiType>;
-      ProviderNotExist: AugmentedError<ApiType>;
+      /**
+       * Chain Id is too long.
+       **/
+      BadChainId: AugmentedError<ApiType>;
+      /**
+       * The provider is inactive.
+       **/
+      InactiveProvider: AugmentedError<ApiType>;
+      /**
+       * Provider invalid state.
+       **/
+      InvalidProviderState: AugmentedError<ApiType>;
+      /**
+       * The provider/project doesn't exist in the list.
+       **/
+      NotExist: AugmentedError<ApiType>;
+      /**
+       * You are not the owner of the The provider/project.
+       **/
+      NotOwner: AugmentedError<ApiType>;
+      /**
+       * No permission to perform specific operation.
+       **/
+      PermissionDenied: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -186,7 +216,7 @@ declare module '@polkadot/api-base/types/errors' {
       CallFiltered: AugmentedError<ApiType>;
       /**
        * Failed to extract the runtime version from the new runtime.
-       *
+       * 
        * Either calling `Core_version` or decoding `RuntimeVersion` failed.
        **/
       FailedToExtractRuntimeVersion: AugmentedError<ApiType>;

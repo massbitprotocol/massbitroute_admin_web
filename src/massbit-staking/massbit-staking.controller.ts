@@ -3,10 +3,23 @@ import { Response } from 'express';
 
 import { StakingDto, StakingProjectDto } from '@massbit/dto/staking.dto';
 import { MassbitStakingService } from './massbit-staking.service';
+import { RegisterDto } from '@massbit/dto/register.dto';
 
 @Controller('massbit')
 export class MassbitStakingController {
   constructor(private stakingService: MassbitStakingService) {}
+
+  @Post('admin/register-provider')
+  async adminRegisterProvider(
+    @Res() res: Response,
+    @Body() registerDto: RegisterDto,
+  ): Promise<any> {
+    await this.stakingService.adminRegisterProvider(registerDto);
+
+    return res.json({
+      status: 'success',
+    });
+  }
 
   @Post('/staking-provider')
   async stakingProvider(

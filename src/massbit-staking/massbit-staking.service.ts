@@ -1,3 +1,4 @@
+import { RegisterDto } from '@massbit/dto/register.dto';
 import { StakingDto, StakingProjectDto } from '@massbit/dto/staking.dto';
 import {
   BadRequestException,
@@ -25,49 +26,105 @@ export class MassbitStakingService implements OnModuleInit {
     this.logger.log('Connected to substrate chain!');
   }
 
+  async adminRegisterProvider(registerDto: RegisterDto): Promise<any> {
+    const { ADMIN_MNEMONIC, ADMIN_DERIVATION } = process.env;
+    const keyring = new Keyring({ type: 'sr25519' });
+    keyring.setSS58Format(42);
+
+    const pair = keyring.addFromUri(`${ADMIN_MNEMONIC}//${ADMIN_DERIVATION}`);
+    this.logger.debug(
+      `Handle register provider with admin :>> ${pair.address}`,
+    );
+
+    const excuteRegister = new Promise(async (resolve, reject) => {
+      try {
+        const unsub = await this.api.tx.dapi
+          .registerProvider(
+            registerDto.providerId,
+            registerDto.providerType,
+            registerDto.operator,
+            `${registerDto.blockchain}.${registerDto.network}`,
+          )
+          .signAndSend(pair, ({ status, events = [], dispatchError }) => {
+            if (status.isFinalized) {
+              if (dispatchError) {
+                if (dispatchError.isModule) {
+                  const decoded = this.api.registry.findMetaError(
+                    dispatchError.asModule,
+                  );
+                  const { docs, name, section } = decoded;
+
+                  reject(
+                    new BadRequestException(
+                      `${name} (${section}): ${docs.join(' ')}`,
+                    ),
+                  );
+                } else {
+                  reject(
+                    new BadRequestException(`${dispatchError.toString()}`),
+                  );
+                }
+              } else {
+                const blockHash = status.asFinalized.toString();
+                unsub();
+                resolve(blockHash);
+              }
+              unsub();
+              resolve(true);
+            }
+          });
+      } catch (error) {
+        reject(new BadRequestException(error));
+      }
+    }).catch((err) => {
+      throw new BadRequestException(err);
+    });
+
+    return await excuteRegister;
+  }
+
   async stakingProvider(stakingDto: StakingDto): Promise<any> {
     const keyring = new Keyring({ type: 'sr25519' });
     keyring.setSS58Format(42);
 
     const newPair = keyring.addFromUri(stakingDto.memonic);
-    this.logger.debug('Handle staking :>> ', newPair.address);
     const excuteStaking = new Promise(async (resolve, reject) => {
-      const unsub = await this.api.tx.dapi
-        .registerProvider(
-          stakingDto.providerId,
-          stakingDto.providerType,
-          `${stakingDto.blockchain}.${stakingDto.network}`,
-          `${stakingDto.amount}000000000000000000`,
-        )
-        .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-          if (status.isFinalized) {
-            if (dispatchError) {
-              if (dispatchError.isModule) {
-                const decoded = this.api.registry.findMetaError(
-                  dispatchError.asModule,
-                );
-                const { docs, name, section } = decoded;
+      try {
+        const unsub = await this.api.tx.dapi
+          .depositProvider(stakingDto.providerId, stakingDto.amount)
+          .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
+            if (status.isFinalized) {
+              if (dispatchError) {
+                if (dispatchError.isModule) {
+                  const decoded = this.api.registry.findMetaError(
+                    dispatchError.asModule,
+                  );
+                  const { docs, name, section } = decoded;
 
-                reject(
-                  new BadRequestException(
-                    `${name} (${section}): ${docs.join(' ')}`,
-                  ),
-                );
+                  reject(
+                    new BadRequestException(
+                      `${name} (${section}): ${docs.join(' ')}`,
+                    ),
+                  );
+                } else {
+                  reject(
+                    new BadRequestException(`${dispatchError.toString()}`),
+                  );
+                }
               } else {
-                reject(new BadRequestException(`${dispatchError.toString()}`));
+                const blockHash = status.asFinalized.toString();
+                unsub();
+                resolve(blockHash);
               }
-            } else {
-              const blockHash = status.asFinalized.toString();
               unsub();
-              resolve(blockHash);
+              resolve(true);
             }
-            unsub();
-            resolve(true);
-          }
-        })
-        .catch((err) => {
-          throw new BadRequestException(err);
-        });
+          });
+      } catch (error) {
+        reject(new BadRequestException(error));
+      }
+    }).catch((err) => {
+      throw new BadRequestException(err);
     });
 
     return await excuteStaking;
@@ -79,41 +136,46 @@ export class MassbitStakingService implements OnModuleInit {
 
     const newPair = keyring.addFromUri(stakingDto.memonic);
     const excuteStaking = new Promise(async (resolve, reject) => {
-      const unsub = await this.api.tx.dapi
-        .registerProject(
-          stakingDto.projectId,
-          `${stakingDto.blockchain}.${stakingDto.network}`,
-          `${stakingDto.amount}000000000000000000`,
-        )
-        .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-          if (status.isFinalized) {
-            if (dispatchError) {
-              if (dispatchError.isModule) {
-                const decoded = this.api.registry.findMetaError(
-                  dispatchError.asModule,
-                );
-                const { docs, name, section } = decoded;
+      try {
+        const unsub = await this.api.tx.dapi
+          .registerProject(
+            stakingDto.projectId,
+            `${stakingDto.blockchain}.${stakingDto.network}`,
+            `${stakingDto.amount}000000000000000000`,
+          )
+          .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
+            if (status.isFinalized) {
+              if (dispatchError) {
+                if (dispatchError.isModule) {
+                  const decoded = this.api.registry.findMetaError(
+                    dispatchError.asModule,
+                  );
+                  const { docs, name, section } = decoded;
 
-                reject(
-                  new BadRequestException(
-                    `${name} (${section}): ${docs.join(' ')}`,
-                  ),
-                );
+                  reject(
+                    new BadRequestException(
+                      `${name} (${section}): ${docs.join(' ')}`,
+                    ),
+                  );
+                } else {
+                  reject(
+                    new BadRequestException(`${dispatchError.toString()}`),
+                  );
+                }
               } else {
-                reject(new BadRequestException(`${dispatchError.toString()}`));
+                const blockHash = status.asFinalized.toString();
+                unsub();
+                resolve(blockHash);
               }
-            } else {
-              const blockHash = status.asFinalized.toString();
               unsub();
-              resolve(blockHash);
+              resolve(true);
             }
-            unsub();
-            resolve(true);
-          }
-        })
-        .catch((err) => {
-          throw new BadRequestException(err);
-        });
+          });
+      } catch (error) {
+        reject(new BadRequestException(error));
+      }
+    }).catch((err) => {
+      throw new BadRequestException(err);
     });
 
     return await excuteStaking;

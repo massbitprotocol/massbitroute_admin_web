@@ -5,14 +5,7 @@ import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Vec, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { Codec } from '@polkadot/types-codec/types';
 import type { Perbill } from '@polkadot/types/interfaces/runtime';
-import type {
-  FrameSupportPalletId,
-  FrameSupportWeightsRuntimeDbWeight,
-  FrameSupportWeightsWeightToFeeCoefficient,
-  FrameSystemLimitsBlockLength,
-  FrameSystemLimitsBlockWeights,
-  SpVersionRuntimeVersion,
-} from '@polkadot/types/lookup';
+import type { FrameSupportPalletId, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/consts' {
   export interface AugmentedConsts<ApiType extends ApiTypes> {
@@ -56,7 +49,7 @@ declare module '@polkadot/api-base/types/consts' {
        * values the same or they will reduce them by one. Stakers cannot add an additional
        * `EraStake` value by calling `stake` or `unstake` if they've reached the max number of
        * values.
-       *
+       * 
        * This ensures that history doesn't grow indefinitely - if there are too many chunks,
        * stakers should first claim their former rewards before adding additional `EraStake`
        * values.
@@ -86,7 +79,7 @@ declare module '@polkadot/api-base/types/consts' {
        **/
       operatorRewardPercentage: Perbill & AugmentedConst<ApiType>;
       /**
-       * Dapi staking pallet Id
+       * dAPI staking pallet Id.
        **/
       palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
       /**
@@ -96,7 +89,6 @@ declare module '@polkadot/api-base/types/consts' {
       /**
        * Number of eras that need to pass until unstaked value can be withdrawn.
        * Current era is always counted as full era (regardless how much blocks are remaining).
-       * When set to `0`, it's equal to having no unbonding period.
        **/
       unbondingPeriod: u32 & AugmentedConst<ApiType>;
       /**
@@ -133,7 +125,7 @@ declare module '@polkadot/api-base/types/consts' {
       dbWeight: FrameSupportWeightsRuntimeDbWeight & AugmentedConst<ApiType>;
       /**
        * The designated SS85 prefix of this chain.
-       *
+       * 
        * This replaces the "ss58Format" property declared in the chain spec. Reason is
        * that the runtime should know about the prefix in order to make use of it as
        * an identifier of the chain.
@@ -165,21 +157,21 @@ declare module '@polkadot/api-base/types/consts' {
       /**
        * A fee mulitplier for `Operational` extrinsics to compute "virtual tip" to boost their
        * `priority`
-       *
+       * 
        * This value is multipled by the `final_fee` to obtain a "virtual tip" that is later
        * added to a tip component in regular `priority` calculations.
        * It means that a `Normal` transaction can front-run a similarly-sized `Operational`
        * extrinsic (with no tip), by including a tip value greater than the virtual tip.
-       *
+       * 
        * ```rust,ignore
        * // For `Normal`
        * let priority = priority_calc(tip);
-       *
+       * 
        * // For `Operational`
        * let virtual_tip = (inclusion_fee + tip) * OperationalFeeMultiplier;
        * let priority = priority_calc(tip + virtual_tip);
        * ```
-       *
+       * 
        * Note that since we use `final_fee` the multiplier applies also to the regular `tip`
        * sent with the transaction. So, not only does the transaction get a priority bump based
        * on the `inclusion_fee`, but we also amplify the impact of tips applied to `Operational`
@@ -193,8 +185,7 @@ declare module '@polkadot/api-base/types/consts' {
       /**
        * The polynomial that is applied in order to derive fee from weight.
        **/
-      weightToFee: Vec<FrameSupportWeightsWeightToFeeCoefficient> &
-        AugmentedConst<ApiType>;
+      weightToFee: Vec<FrameSupportWeightsWeightToFeeCoefficient> & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
