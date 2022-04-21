@@ -1,5 +1,6 @@
 import { RegisterDto } from '@massbit/dto/register.dto';
 import { StakingDto, StakingProjectDto } from '@massbit/dto/staking.dto';
+import { UnRegisterDto } from '@massbit/dto/unregister.dto';
 import {
   BadRequestException,
   Injectable,
@@ -97,6 +98,55 @@ export class MassbitStakingService implements OnModuleInit {
             stakingDto.providerId,
             `${stakingDto.amount}000000000000000000`,
           )
+          .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
+            if (status.isFinalized) {
+              if (dispatchError) {
+                if (dispatchError.isModule) {
+                  const decoded = this.api.registry.findMetaError(
+                    dispatchError.asModule,
+                  );
+                  const { docs, name, section } = decoded;
+
+                  reject(
+                    new BadRequestException(
+                      `${name} (${section}): ${docs.join(' ')}`,
+                    ),
+                  );
+                } else {
+                  reject(
+                    new BadRequestException(`${dispatchError.toString()}`),
+                  );
+                }
+              } else {
+                const blockHash = status.asFinalized.toString();
+                unsub();
+                resolve(blockHash);
+              }
+              unsub();
+              resolve(true);
+            }
+          });
+      } catch (error) {
+        reject(new BadRequestException(error));
+      }
+    }).catch((err) => {
+      throw new BadRequestException(err);
+    });
+
+    return await excuteStaking;
+  }
+
+  async unRegisterProvider(unRegisterDto: UnRegisterDto): Promise<any> {
+    const keyring = new Keyring({ type: 'sr25519' });
+    keyring.setSS58Format(42);
+
+    const newPair = keyring.addFromUri(unRegisterDto.memonic);
+    this.logger.debug(`Handle staking provider with :>> ${newPair.address}`);
+
+    const excuteStaking = new Promise(async (resolve, reject) => {
+      try {
+        const unsub = await this.api.tx.dapi
+          .unregisterProvider(unRegisterDto.providerId)
           .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
             if (status.isFinalized) {
               if (dispatchError) {

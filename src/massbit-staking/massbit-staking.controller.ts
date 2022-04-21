@@ -4,6 +4,7 @@ import { Response } from 'express';
 import { StakingDto, StakingProjectDto } from '@massbit/dto/staking.dto';
 import { MassbitStakingService } from './massbit-staking.service';
 import { RegisterDto } from '@massbit/dto/register.dto';
+import { UnRegisterDto } from '@massbit/dto/unregister.dto';
 
 @Controller('massbit')
 export class MassbitStakingController {
@@ -21,7 +22,19 @@ export class MassbitStakingController {
     });
   }
 
-  @Post('/staking-provider')
+  @Post('unregister-provider')
+  async unRegisterProvider(
+    @Res() res: Response,
+    @Body() unRegisterDto: UnRegisterDto,
+  ): Promise<any> {
+    await this.stakingService.unRegisterProvider(unRegisterDto);
+
+    return res.json({
+      status: 'success',
+    });
+  }
+
+  @Post('staking-provider')
   async stakingProvider(
     @Res() res: Response,
     @Body() stakingDto: StakingDto,
@@ -33,7 +46,7 @@ export class MassbitStakingController {
     });
   }
 
-  @Post('/staking-project')
+  @Post('staking-project')
   async stakingProject(
     @Res() res: Response,
     @Body() stakingDto: StakingProjectDto,
