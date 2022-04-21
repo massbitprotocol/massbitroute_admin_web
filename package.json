@@ -24,10 +24,12 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^0.0.7",
     "@nestjs/common": "^8.1.1",
     "@nestjs/core": "^8.1.1",
     "@nestjs/platform-express": "^8.1.1",
     "@nestjs/swagger": "^5.1.5",
+    "@nestjs/terminus": "^8.0.6",
     "@polkadot/api": "7.12.1",
     "@polkadot/keyring": "8.5.1",
     "@polkadot/util": "8.5.1",
