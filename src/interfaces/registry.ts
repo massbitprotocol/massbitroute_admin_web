@@ -1,12 +1,134 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { BTreeSetAccountId32, BTreeSetBoundedVec, FinalityGrandpaEquivocationPrecommit, FinalityGrandpaEquivocationPrevote, FinalityGrandpaPrecommit, FinalityGrandpaPrevote, FrameSupportDispatchRawOrigin, FrameSupportPalletId, FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchClass, FrameSupportWeightsDispatchInfo, FrameSupportWeightsPays, FrameSupportWeightsPerDispatchClassU32, FrameSupportWeightsPerDispatchClassU64, FrameSupportWeightsPerDispatchClassWeightsPerClass, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemAccountInfo, FrameSystemCall, FrameSystemError, FrameSystemEvent, FrameSystemEventRecord, FrameSystemExtensionsCheckGenesis, FrameSystemExtensionsCheckNonce, FrameSystemExtensionsCheckSpecVersion, FrameSystemExtensionsCheckTxVersion, FrameSystemExtensionsCheckWeight, FrameSystemLastRuntimeUpgradeInfo, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, FrameSystemLimitsWeightsPerClass, FrameSystemPhase, LocalRuntimeMassbitId, LocalRuntimeOriginCaller, LocalRuntimeRuntime, PalletBalancesAccountData, PalletBalancesBalanceLock, PalletBalancesCall, PalletBalancesError, PalletBalancesEvent, PalletBalancesReasons, PalletBalancesReleases, PalletBalancesReserveData, PalletBlockRewardCall, PalletBlockRewardError, PalletBlockRewardEvent, PalletBlockRewardRewardDistributionConfig, PalletDapiCall, PalletDapiError, PalletDapiEvent, PalletDapiProject, PalletDapiProvider, PalletDapiProviderDeactivateReason, PalletDapiProviderState, PalletDapiProviderType, PalletDapiStakingAccountLedger, PalletDapiStakingEraInfo, PalletDapiStakingEraStake, PalletDapiStakingForcing, PalletDapiStakingPalletCall, PalletDapiStakingPalletError, PalletDapiStakingPalletEvent, PalletDapiStakingProviderInfo, PalletDapiStakingProviderStakeInfo, PalletDapiStakingProviderState, PalletDapiStakingRewardInfo, PalletDapiStakingStakerInfo, PalletDapiStakingUnbondingInfo, PalletDapiStakingUnlockingChunk, PalletGrandpaCall, PalletGrandpaError, PalletGrandpaEvent, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletSudoCall, PalletSudoError, PalletSudoEvent, PalletTimestampCall, PalletTransactionPaymentChargeTransactionPayment, PalletTransactionPaymentReleases, PalletUtilityCall, PalletUtilityError, PalletUtilityEvent, SpCoreEcdsaSignature, SpCoreEd25519Public, SpCoreEd25519Signature, SpCoreSr25519Signature, SpCoreVoid, SpFinalityGrandpaAppPublic, SpFinalityGrandpaAppSignature, SpFinalityGrandpaEquivocation, SpFinalityGrandpaEquivocationProof, SpRuntimeArithmeticError, SpRuntimeDigest, SpRuntimeDigestDigestItem, SpRuntimeDispatchError, SpRuntimeModuleError, SpRuntimeMultiSignature, SpRuntimeTokenError, SpVersionRuntimeVersion } from '@polkadot/types/lookup';
+import type {
+  BTreeSetAccountId32,
+  BTreeSetBoundedVec,
+  DevnetRuntimeMassbitId,
+  DevnetRuntimeOriginCaller,
+  DevnetRuntimeRuntime,
+  DevnetRuntimeSessionKeys,
+  FinalityGrandpaEquivocationPrecommit,
+  FinalityGrandpaEquivocationPrevote,
+  FinalityGrandpaPrecommit,
+  FinalityGrandpaPrevote,
+  FrameSupportDispatchRawOrigin,
+  FrameSupportPalletId,
+  FrameSupportTokensMiscBalanceStatus,
+  FrameSupportWeightsDispatchClass,
+  FrameSupportWeightsDispatchInfo,
+  FrameSupportWeightsPays,
+  FrameSupportWeightsPerDispatchClassU32,
+  FrameSupportWeightsPerDispatchClassU64,
+  FrameSupportWeightsPerDispatchClassWeightsPerClass,
+  FrameSupportWeightsRuntimeDbWeight,
+  FrameSupportWeightsWeightToFeeCoefficient,
+  FrameSystemAccountInfo,
+  FrameSystemCall,
+  FrameSystemError,
+  FrameSystemEvent,
+  FrameSystemEventRecord,
+  FrameSystemExtensionsCheckGenesis,
+  FrameSystemExtensionsCheckNonce,
+  FrameSystemExtensionsCheckSpecVersion,
+  FrameSystemExtensionsCheckTxVersion,
+  FrameSystemExtensionsCheckWeight,
+  FrameSystemLastRuntimeUpgradeInfo,
+  FrameSystemLimitsBlockLength,
+  FrameSystemLimitsBlockWeights,
+  FrameSystemLimitsWeightsPerClass,
+  FrameSystemPhase,
+  PalletBalancesAccountData,
+  PalletBalancesBalanceLock,
+  PalletBalancesCall,
+  PalletBalancesError,
+  PalletBalancesEvent,
+  PalletBalancesReasons,
+  PalletBalancesReleases,
+  PalletBalancesReserveData,
+  PalletBlockRewardCall,
+  PalletBlockRewardDistributionConfig,
+  PalletBlockRewardError,
+  PalletBlockRewardEvent,
+  PalletDapiCall,
+  PalletDapiError,
+  PalletDapiEvent,
+  PalletDapiPreValidateRegulatorCalls,
+  PalletDapiProject,
+  PalletDapiProvider,
+  PalletDapiProviderDeactivateReason,
+  PalletDapiProviderStatus,
+  PalletDapiProviderType,
+  PalletDapiStakingCall,
+  PalletDapiStakingDelegation,
+  PalletDapiStakingEraInfo,
+  PalletDapiStakingEraMetadata,
+  PalletDapiStakingEraStake,
+  PalletDapiStakingError,
+  PalletDapiStakingEvent,
+  PalletDapiStakingProviderEraMetadata,
+  PalletDapiStakingProviderMetadata,
+  PalletDapiStakingProviderStatus,
+  PalletDapiStakingUnbondingMetadata,
+  PalletDapiStakingUnlockingChunk,
+  PalletGrandpaCall,
+  PalletGrandpaError,
+  PalletGrandpaEvent,
+  PalletGrandpaStoredPendingChange,
+  PalletGrandpaStoredState,
+  PalletImOnlineBoundedOpaqueNetworkState,
+  PalletImOnlineCall,
+  PalletImOnlineError,
+  PalletImOnlineEvent,
+  PalletImOnlineHeartbeat,
+  PalletImOnlineSr25519AppSr25519Public,
+  PalletImOnlineSr25519AppSr25519Signature,
+  PalletSessionCall,
+  PalletSessionError,
+  PalletSessionEvent,
+  PalletSudoCall,
+  PalletSudoError,
+  PalletSudoEvent,
+  PalletTimestampCall,
+  PalletTransactionPaymentChargeTransactionPayment,
+  PalletTransactionPaymentReleases,
+  PalletUtilityCall,
+  PalletUtilityError,
+  PalletUtilityEvent,
+  PalletValidatorSetCall,
+  PalletValidatorSetError,
+  PalletValidatorSetEvent,
+  SpConsensusAuraSr25519AppSr25519Public,
+  SpCoreCryptoKeyTypeId,
+  SpCoreEcdsaSignature,
+  SpCoreEd25519Public,
+  SpCoreEd25519Signature,
+  SpCoreOffchainOpaqueNetworkState,
+  SpCoreSr25519Public,
+  SpCoreSr25519Signature,
+  SpCoreVoid,
+  SpFinalityGrandpaAppPublic,
+  SpFinalityGrandpaAppSignature,
+  SpFinalityGrandpaEquivocation,
+  SpFinalityGrandpaEquivocationProof,
+  SpRuntimeArithmeticError,
+  SpRuntimeDigest,
+  SpRuntimeDigestDigestItem,
+  SpRuntimeDispatchError,
+  SpRuntimeModuleError,
+  SpRuntimeMultiSignature,
+  SpRuntimeTokenError,
+  SpVersionRuntimeVersion,
+} from '@polkadot/types/lookup';
 
 declare module '@polkadot/types/types/registry' {
   export interface InterfaceTypes {
     BTreeSetAccountId32: BTreeSetAccountId32;
     BTreeSetBoundedVec: BTreeSetBoundedVec;
+    DevnetRuntimeMassbitId: DevnetRuntimeMassbitId;
+    DevnetRuntimeOriginCaller: DevnetRuntimeOriginCaller;
+    DevnetRuntimeRuntime: DevnetRuntimeRuntime;
+    DevnetRuntimeSessionKeys: DevnetRuntimeSessionKeys;
     FinalityGrandpaEquivocationPrecommit: FinalityGrandpaEquivocationPrecommit;
     FinalityGrandpaEquivocationPrevote: FinalityGrandpaEquivocationPrevote;
     FinalityGrandpaPrecommit: FinalityGrandpaPrecommit;
@@ -37,9 +159,6 @@ declare module '@polkadot/types/types/registry' {
     FrameSystemLimitsBlockWeights: FrameSystemLimitsBlockWeights;
     FrameSystemLimitsWeightsPerClass: FrameSystemLimitsWeightsPerClass;
     FrameSystemPhase: FrameSystemPhase;
-    LocalRuntimeMassbitId: LocalRuntimeMassbitId;
-    LocalRuntimeOriginCaller: LocalRuntimeOriginCaller;
-    LocalRuntimeRuntime: LocalRuntimeRuntime;
     PalletBalancesAccountData: PalletBalancesAccountData;
     PalletBalancesBalanceLock: PalletBalancesBalanceLock;
     PalletBalancesCall: PalletBalancesCall;
@@ -49,36 +168,45 @@ declare module '@polkadot/types/types/registry' {
     PalletBalancesReleases: PalletBalancesReleases;
     PalletBalancesReserveData: PalletBalancesReserveData;
     PalletBlockRewardCall: PalletBlockRewardCall;
+    PalletBlockRewardDistributionConfig: PalletBlockRewardDistributionConfig;
     PalletBlockRewardError: PalletBlockRewardError;
     PalletBlockRewardEvent: PalletBlockRewardEvent;
-    PalletBlockRewardRewardDistributionConfig: PalletBlockRewardRewardDistributionConfig;
     PalletDapiCall: PalletDapiCall;
     PalletDapiError: PalletDapiError;
     PalletDapiEvent: PalletDapiEvent;
+    PalletDapiPreValidateRegulatorCalls: PalletDapiPreValidateRegulatorCalls;
     PalletDapiProject: PalletDapiProject;
     PalletDapiProvider: PalletDapiProvider;
     PalletDapiProviderDeactivateReason: PalletDapiProviderDeactivateReason;
-    PalletDapiProviderState: PalletDapiProviderState;
+    PalletDapiProviderStatus: PalletDapiProviderStatus;
     PalletDapiProviderType: PalletDapiProviderType;
-    PalletDapiStakingAccountLedger: PalletDapiStakingAccountLedger;
+    PalletDapiStakingCall: PalletDapiStakingCall;
+    PalletDapiStakingDelegation: PalletDapiStakingDelegation;
     PalletDapiStakingEraInfo: PalletDapiStakingEraInfo;
+    PalletDapiStakingEraMetadata: PalletDapiStakingEraMetadata;
     PalletDapiStakingEraStake: PalletDapiStakingEraStake;
-    PalletDapiStakingForcing: PalletDapiStakingForcing;
-    PalletDapiStakingPalletCall: PalletDapiStakingPalletCall;
-    PalletDapiStakingPalletError: PalletDapiStakingPalletError;
-    PalletDapiStakingPalletEvent: PalletDapiStakingPalletEvent;
-    PalletDapiStakingProviderInfo: PalletDapiStakingProviderInfo;
-    PalletDapiStakingProviderStakeInfo: PalletDapiStakingProviderStakeInfo;
-    PalletDapiStakingProviderState: PalletDapiStakingProviderState;
-    PalletDapiStakingRewardInfo: PalletDapiStakingRewardInfo;
-    PalletDapiStakingStakerInfo: PalletDapiStakingStakerInfo;
-    PalletDapiStakingUnbondingInfo: PalletDapiStakingUnbondingInfo;
+    PalletDapiStakingError: PalletDapiStakingError;
+    PalletDapiStakingEvent: PalletDapiStakingEvent;
+    PalletDapiStakingProviderEraMetadata: PalletDapiStakingProviderEraMetadata;
+    PalletDapiStakingProviderMetadata: PalletDapiStakingProviderMetadata;
+    PalletDapiStakingProviderStatus: PalletDapiStakingProviderStatus;
+    PalletDapiStakingUnbondingMetadata: PalletDapiStakingUnbondingMetadata;
     PalletDapiStakingUnlockingChunk: PalletDapiStakingUnlockingChunk;
     PalletGrandpaCall: PalletGrandpaCall;
     PalletGrandpaError: PalletGrandpaError;
     PalletGrandpaEvent: PalletGrandpaEvent;
     PalletGrandpaStoredPendingChange: PalletGrandpaStoredPendingChange;
     PalletGrandpaStoredState: PalletGrandpaStoredState;
+    PalletImOnlineBoundedOpaqueNetworkState: PalletImOnlineBoundedOpaqueNetworkState;
+    PalletImOnlineCall: PalletImOnlineCall;
+    PalletImOnlineError: PalletImOnlineError;
+    PalletImOnlineEvent: PalletImOnlineEvent;
+    PalletImOnlineHeartbeat: PalletImOnlineHeartbeat;
+    PalletImOnlineSr25519AppSr25519Public: PalletImOnlineSr25519AppSr25519Public;
+    PalletImOnlineSr25519AppSr25519Signature: PalletImOnlineSr25519AppSr25519Signature;
+    PalletSessionCall: PalletSessionCall;
+    PalletSessionError: PalletSessionError;
+    PalletSessionEvent: PalletSessionEvent;
     PalletSudoCall: PalletSudoCall;
     PalletSudoError: PalletSudoError;
     PalletSudoEvent: PalletSudoEvent;
@@ -88,9 +216,16 @@ declare module '@polkadot/types/types/registry' {
     PalletUtilityCall: PalletUtilityCall;
     PalletUtilityError: PalletUtilityError;
     PalletUtilityEvent: PalletUtilityEvent;
+    PalletValidatorSetCall: PalletValidatorSetCall;
+    PalletValidatorSetError: PalletValidatorSetError;
+    PalletValidatorSetEvent: PalletValidatorSetEvent;
+    SpConsensusAuraSr25519AppSr25519Public: SpConsensusAuraSr25519AppSr25519Public;
+    SpCoreCryptoKeyTypeId: SpCoreCryptoKeyTypeId;
     SpCoreEcdsaSignature: SpCoreEcdsaSignature;
     SpCoreEd25519Public: SpCoreEd25519Public;
     SpCoreEd25519Signature: SpCoreEd25519Signature;
+    SpCoreOffchainOpaqueNetworkState: SpCoreOffchainOpaqueNetworkState;
+    SpCoreSr25519Public: SpCoreSr25519Public;
     SpCoreSr25519Signature: SpCoreSr25519Signature;
     SpCoreVoid: SpCoreVoid;
     SpFinalityGrandpaAppPublic: SpFinalityGrandpaAppPublic;

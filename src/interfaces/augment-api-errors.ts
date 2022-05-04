@@ -47,116 +47,47 @@ declare module '@polkadot/api-base/types/errors' {
       /**
        * Sum of all rations must be one whole (100%)
        **/
-      InvalidDistributionConfiguration: AugmentedError<ApiType>;
+      InvalidDistributionConfig: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
     };
     dapi: {
-      /**
-       * The provider/project is already registered.
-       **/
       AlreadyExist: AugmentedError<ApiType>;
-      /**
-       * Chain Id is too long.
-       **/
       BadChainId: AugmentedError<ApiType>;
-      /**
-       * The provider is inactive.
-       **/
+      ChainIdDNE: AugmentedError<ApiType>;
       InactiveProvider: AugmentedError<ApiType>;
-      /**
-       * Provider invalid state.
-       **/
-      InvalidProviderState: AugmentedError<ApiType>;
-      /**
-       * The provider/project doesn't exist in the list.
-       **/
-      NotExist: AugmentedError<ApiType>;
-      /**
-       * You are not the owner of the The provider/project.
-       **/
+      InvalidProviderStatus: AugmentedError<ApiType>;
       NotOwner: AugmentedError<ApiType>;
-      /**
-       * No permission to perform specific operation.
-       **/
       PermissionDenied: AugmentedError<ApiType>;
+      ProjectDNE: AugmentedError<ApiType>;
+      ProjectExists: AugmentedError<ApiType>;
+      ProviderDNE: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
     };
     dapiStaking: {
-      /**
-       * Provider already claimed in this era and reward is distributed
-       **/
       AlreadyClaimedInThisEra: AugmentedError<ApiType>;
-      /**
-       * The provider is already registered by other account
-       **/
-      AlreadyRegisteredProvider: AugmentedError<ApiType>;
-      /**
-       * Era parameter is out of bounds
-       **/
       EraOutOfBounds: AugmentedError<ApiType>;
-      /**
-       * Can not stake with value less than minimum staking value
-       **/
-      InsufficientValue: AugmentedError<ApiType>;
-      /**
-       * Number of stakers per provider exceeded.
-       **/
+      InsufficientBond: AugmentedError<ApiType>;
       MaxNumberOfStakersExceeded: AugmentedError<ApiType>;
-      /**
-       * There are no previously unbonded funds that can be unstaked and withdrawn.
-       **/
       NothingToWithdraw: AugmentedError<ApiType>;
-      /**
-       * Targets must be operated provider
-       **/
       NotOperatedProvider: AugmentedError<ApiType>;
-      /**
-       * Provider not owned by the account id.
-       **/
       NotOwnedProvider: AugmentedError<ApiType>;
-      /**
-       * Provider isn't staked.
-       **/
       NotStakedProvider: AugmentedError<ApiType>;
-      /**
-       * Provider isn't unregistered.
-       **/
       NotUnregisteredProvider: AugmentedError<ApiType>;
-      /**
-       * Can not stake with zero value.
-       **/
+      NoWritingSameValue: AugmentedError<ApiType>;
+      ProviderDNE: AugmentedError<ApiType>;
+      ProviderExists: AugmentedError<ApiType>;
       StakingWithNoValue: AugmentedError<ApiType>;
-      /**
-       * Too many active `EraStake` values for (staker, provider) pairing.
-       * Claim existing rewards to fix this problem.
-       **/
       TooManyEraStakeValues: AugmentedError<ApiType>;
-      /**
-       * Provider has too many unlocking chunks. Withdraw the existing chunks if possible
-       * or wait for current chunks to complete unlocking process to withdraw them.
-       **/
       TooManyUnlockingChunks: AugmentedError<ApiType>;
-      /**
-       * Unclaimed rewards should be claimed before withdrawing stake.
-       **/
       UnclaimedRewardsRemaining: AugmentedError<ApiType>;
-      /**
-       * Report issue on github if this is ever emitted
-       **/
-      UnexpectedStakeInfoEra: AugmentedError<ApiType>;
-      /**
-       * Report issue on github if this is ever emitted
-       **/
-      UnknownEraReward: AugmentedError<ApiType>;
-      /**
-       * Unstaking a provider with zero value
-       **/
+      UnexpectedDelegationInfoEra: AugmentedError<ApiType>;
+      UnknownEra: AugmentedError<ApiType>;
       UnstakingWithNoValue: AugmentedError<ApiType>;
       /**
        * Generic error
@@ -199,6 +130,46 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    imOnline: {
+      /**
+       * Duplicated heartbeat.
+       **/
+      DuplicatedHeartbeat: AugmentedError<ApiType>;
+      /**
+       * Non existent public key.
+       **/
+      InvalidKey: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    session: {
+      /**
+       * Registered duplicate key.
+       **/
+      DuplicatedKey: AugmentedError<ApiType>;
+      /**
+       * Invalid ownership proof.
+       **/
+      InvalidProof: AugmentedError<ApiType>;
+      /**
+       * Key setting account is not live, so it's impossible to associate keys.
+       **/
+      NoAccount: AugmentedError<ApiType>;
+      /**
+       * No associated validator ID for account.
+       **/
+      NoAssociatedValidatorId: AugmentedError<ApiType>;
+      /**
+       * No keys are associated with this account.
+       **/
+      NoKeys: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     sudo: {
       /**
        * Sender must be the Sudo account
@@ -216,7 +187,7 @@ declare module '@polkadot/api-base/types/errors' {
       CallFiltered: AugmentedError<ApiType>;
       /**
        * Failed to extract the runtime version from the new runtime.
-       * 
+       *
        * Either calling `Core_version` or decoding `RuntimeVersion` failed.
        **/
       FailedToExtractRuntimeVersion: AugmentedError<ApiType>;
@@ -248,6 +219,28 @@ declare module '@polkadot/api-base/types/errors' {
        * Too many calls batched.
        **/
       TooManyCalls: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    validatorSet: {
+      /**
+       * Only the validator can add itself back after coming online.
+       **/
+      BadOrigin: AugmentedError<ApiType>;
+      /**
+       * Validator is already in the validator set.
+       **/
+      Duplicate: AugmentedError<ApiType>;
+      /**
+       * Target (post-removal) validator count is below the minimum.
+       **/
+      TooLowValidatorCount: AugmentedError<ApiType>;
+      /**
+       * Validator is not approved for re-addition.
+       **/
+      ValidatorNotApproved: AugmentedError<ApiType>;
       /**
        * Generic error
        **/

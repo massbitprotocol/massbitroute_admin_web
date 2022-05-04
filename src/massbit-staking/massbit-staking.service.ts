@@ -20,8 +20,8 @@ export class MassbitStakingService implements OnModuleInit {
     this.logger.log('Connecting to substrate chain...');
     await waitReady();
 
-    const { SUBSTRATE_URL } = process.env;
-    const wsProvider = new WsProvider(SUBSTRATE_URL);
+    const { MASSBIT_CHAIN_URL } = process.env;
+    const wsProvider = new WsProvider(MASSBIT_CHAIN_URL);
     this.api = await ApiPromise.create({ provider: wsProvider });
 
     this.logger.log('Connected to substrate chain!');

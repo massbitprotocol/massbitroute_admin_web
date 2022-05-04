@@ -5,7 +5,14 @@ import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Vec, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
 import type { Codec } from '@polkadot/types-codec/types';
 import type { Perbill } from '@polkadot/types/interfaces/runtime';
-import type { FrameSupportPalletId, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion } from '@polkadot/types/lookup';
+import type {
+  FrameSupportPalletId,
+  FrameSupportWeightsRuntimeDbWeight,
+  FrameSupportWeightsWeightToFeeCoefficient,
+  FrameSystemLimitsBlockLength,
+  FrameSystemLimitsBlockWeights,
+  SpVersionRuntimeVersion,
+} from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/consts' {
   export interface AugmentedConsts<ApiType extends ApiTypes> {
@@ -40,55 +47,42 @@ declare module '@polkadot/api-base/types/consts' {
     };
     dapiStaking: {
       /**
-       * Number of blocks per era.
+       * Maximum number of unique delegators per provider.
        **/
-      blockPerEra: u32 & AugmentedConst<ApiType>;
+      maxDelegatorsPerProvider: u32 & AugmentedConst<ApiType>;
       /**
-       * Max number of unique `EraStake` values that can exist for a `(staker, provider)`
-       * pairing. When stakers claims rewards, they will either keep the number of `EraStake`
-       * values the same or they will reduce them by one. Stakers cannot add an additional
-       * `EraStake` value by calling `stake` or `unstake` if they've reached the max number of
-       * values.
-       * 
-       * This ensures that history doesn't grow indefinitely - if there are too many chunks,
-       * stakers should first claim their former rewards before adding additional `EraStake`
-       * values.
+       * Max number of unique `EraStake` values that can exist for a `(delegator, provider)`
+       * pairing. When delegators claims rewards, they will either keep the number of
+       * `EraStake` values the same or they will reduce them by one. Delegators cannot add
+       * an additional `EraStake` value by calling `delegate` or `delegator_unstake` if
+       * they've reached the max number of values. This ensures that history doesn't grow
+       * indefinitely - if there are too many chunks, delegators should first claim their former
+       * rewards before adding additional `EraStake` values.
        **/
       maxEraStakeValues: u32 & AugmentedConst<ApiType>;
       /**
-       * Maximum number of unique stakers per provider.
-       **/
-      maxNumberOfStakersPerProvider: u32 & AugmentedConst<ApiType>;
-      /**
-       * Max number of unlocking chunks per account Id <-> provider Id pairing.
-       * If value is zero, unlocking becomes impossible.
+       * Max number of unlocking chunks per account. If value is zero, unbonding becomes
+       * impossible.
        **/
       maxUnlockingChunks: u32 & AugmentedConst<ApiType>;
       /**
-       * Minimum amount that should be left on staker account after staking.
+       * Minimum stake required to be a delegator.
        **/
-      minimumRemainingAmount: u128 & AugmentedConst<ApiType>;
+      minDelegatorStake: u128 & AugmentedConst<ApiType>;
       /**
-       * Minimum amount user must stake on provider.
-       * User can stake less if they already have the minimum staking amount staked on that
-       * particular provider.
+       * Minimum stake required to be a provider.
        **/
-      minimumStakingAmount: u128 & AugmentedConst<ApiType>;
-      /**
-       * Percentage of reward paid to operator.
-       **/
-      operatorRewardPercentage: Perbill & AugmentedConst<ApiType>;
+      minProviderStake: u128 & AugmentedConst<ApiType>;
       /**
        * dAPI staking pallet Id.
        **/
       palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
       /**
-       * Minimum bonded deposit for new provider registration.
+       * Percentage of rewards paid to provider.
        **/
-      registerDeposit: u128 & AugmentedConst<ApiType>;
+      providerRewardsPercentage: Perbill & AugmentedConst<ApiType>;
       /**
-       * Number of eras that need to pass until unstaked value can be withdrawn.
-       * Current era is always counted as full era (regardless how much blocks are remaining).
+       * Number of eras that need to pass until unbonded value can be withdrawn.
        **/
       unbondingPeriod: u32 & AugmentedConst<ApiType>;
       /**
@@ -101,6 +95,19 @@ declare module '@polkadot/api-base/types/consts' {
        * Max Authorities in use
        **/
       maxAuthorities: u32 & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
+    };
+    imOnline: {
+      /**
+       * A configuration for base priority of unsigned transactions.
+       *
+       * This is exposed so that it can be tuned for particular runtime, when
+       * multiple pallets send unsigned transactions.
+       **/
+      unsignedPriority: u64 & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -125,7 +132,7 @@ declare module '@polkadot/api-base/types/consts' {
       dbWeight: FrameSupportWeightsRuntimeDbWeight & AugmentedConst<ApiType>;
       /**
        * The designated SS85 prefix of this chain.
-       * 
+       *
        * This replaces the "ss58Format" property declared in the chain spec. Reason is
        * that the runtime should know about the prefix in order to make use of it as
        * an identifier of the chain.
@@ -157,21 +164,21 @@ declare module '@polkadot/api-base/types/consts' {
       /**
        * A fee mulitplier for `Operational` extrinsics to compute "virtual tip" to boost their
        * `priority`
-       * 
+       *
        * This value is multipled by the `final_fee` to obtain a "virtual tip" that is later
        * added to a tip component in regular `priority` calculations.
        * It means that a `Normal` transaction can front-run a similarly-sized `Operational`
        * extrinsic (with no tip), by including a tip value greater than the virtual tip.
-       * 
+       *
        * ```rust,ignore
        * // For `Normal`
        * let priority = priority_calc(tip);
-       * 
+       *
        * // For `Operational`
        * let virtual_tip = (inclusion_fee + tip) * OperationalFeeMultiplier;
        * let priority = priority_calc(tip + virtual_tip);
        * ```
-       * 
+       *
        * Note that since we use `final_fee` the multiplier applies also to the regular `tip`
        * sent with the transaction. So, not only does the transaction get a priority bump based
        * on the `inclusion_fee`, but we also amplify the impact of tips applied to `Operational`
@@ -185,7 +192,8 @@ declare module '@polkadot/api-base/types/consts' {
       /**
        * The polynomial that is applied in order to derive fee from weight.
        **/
-      weightToFee: Vec<FrameSupportWeightsWeightToFeeCoefficient> & AugmentedConst<ApiType>;
+      weightToFee: Vec<FrameSupportWeightsWeightToFeeCoefficient> &
+        AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
