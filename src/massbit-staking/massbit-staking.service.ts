@@ -99,7 +99,7 @@ export class MassbitStakingService implements OnModuleInit {
             `${stakingDto.amount}000000000000000000`,
           )
           .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               if (dispatchError) {
                 if (dispatchError.isModule) {
                   const decoded = this.api.registry.findMetaError(
@@ -118,7 +118,7 @@ export class MassbitStakingService implements OnModuleInit {
                   );
                 }
               } else {
-                const blockHash = status.asFinalized.toString();
+                const blockHash = status.asInBlock.toString();
                 unsub();
                 resolve(blockHash);
               }
@@ -148,7 +148,7 @@ export class MassbitStakingService implements OnModuleInit {
         const unsub = await this.api.tx.dapi
           .unregisterProvider(unRegisterDto.providerId)
           .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               if (dispatchError) {
                 if (dispatchError.isModule) {
                   const decoded = this.api.registry.findMetaError(
@@ -167,7 +167,7 @@ export class MassbitStakingService implements OnModuleInit {
                   );
                 }
               } else {
-                const blockHash = status.asFinalized.toString();
+                const blockHash = status.asInBlock.toString();
                 unsub();
                 resolve(blockHash);
               }
@@ -199,7 +199,7 @@ export class MassbitStakingService implements OnModuleInit {
             `${stakingDto.amount}000000000000000000`,
           )
           .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               if (dispatchError) {
                 if (dispatchError.isModule) {
                   const decoded = this.api.registry.findMetaError(
@@ -218,7 +218,7 @@ export class MassbitStakingService implements OnModuleInit {
                   );
                 }
               } else {
-                const blockHash = status.asFinalized.toString();
+                const blockHash = status.asInBlock.toString();
                 unsub();
                 resolve(blockHash);
               }
