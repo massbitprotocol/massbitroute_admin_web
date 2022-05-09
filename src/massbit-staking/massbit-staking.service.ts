@@ -47,7 +47,7 @@ export class MassbitStakingService implements OnModuleInit {
             `${registerDto.blockchain}.${registerDto.network}`,
           )
           .signAndSend(pair, ({ status, events = [], dispatchError }) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               if (dispatchError) {
                 if (dispatchError.isModule) {
                   const decoded = this.api.registry.findMetaError(
@@ -66,7 +66,7 @@ export class MassbitStakingService implements OnModuleInit {
                   );
                 }
               } else {
-                const blockHash = status.asFinalized.toString();
+                const blockHash = status.asInBlock.toString();
                 unsub();
                 resolve(blockHash);
               }
