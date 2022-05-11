@@ -37,6 +37,7 @@ export class MassbitStakingService implements OnModuleInit {
       `Handle register provider with admin :>> ${pair.address}`,
     );
 
+    const nonce = await this.api.rpc.system.accountNextIndex(pair.address);
     const excuteRegister = new Promise(async (resolve, reject) => {
       try {
         const unsub = await this.api.tx.dapi
@@ -46,34 +47,40 @@ export class MassbitStakingService implements OnModuleInit {
             registerDto.operator,
             `${registerDto.blockchain}.${registerDto.network}`,
           )
-          .signAndSend(pair, ({ status, events = [], dispatchError }) => {
-            if (status.isFinalized) {
-              if (dispatchError) {
-                if (dispatchError.isModule) {
-                  const decoded = this.api.registry.findMetaError(
-                    dispatchError.asModule,
-                  );
-                  const { docs, name, section } = decoded;
+          .signAndSend(
+            pair,
+            { nonce },
+            ({ status, events = [], dispatchError }) => {
+              if (status.isInBlock) {
+                if (dispatchError) {
+                  unsub();
 
-                  reject(
-                    new BadRequestException(
-                      `${name} (${section}): ${docs.join(' ')}`,
-                    ),
-                  );
+                  if (dispatchError.isModule) {
+                    const decoded = this.api.registry.findMetaError(
+                      dispatchError.asModule,
+                    );
+                    const { docs, name, section } = decoded;
+
+                    reject(
+                      new BadRequestException(
+                        `${name} (${section}): ${docs.join(' ')}`,
+                      ),
+                    );
+                  } else {
+                    reject(
+                      new BadRequestException(`${dispatchError.toString()}`),
+                    );
+                  }
                 } else {
-                  reject(
-                    new BadRequestException(`${dispatchError.toString()}`),
-                  );
+                  const blockHash = status.asInBlock.toString();
+                  unsub();
+                  resolve(blockHash);
                 }
-              } else {
-                const blockHash = status.asFinalized.toString();
                 unsub();
-                resolve(blockHash);
+                resolve(true);
               }
-              unsub();
-              resolve(true);
-            }
-          });
+            },
+          );
       } catch (error) {
         reject(new BadRequestException(error));
       }
@@ -103,8 +110,32 @@ export class MassbitStakingService implements OnModuleInit {
             newPair,
             { nonce },
             ({ status, events = [], dispatchError }) => {
+              if (status.isInBlock) {
+                if (dispatchError) {
+                  unsub();
+
+                  if (dispatchError.isModule) {
+                    const decoded = this.api.registry.findMetaError(
+                      dispatchError.asModule,
+                    );
+                    const { docs, name, section } = decoded;
+
+                    reject(
+                      new BadRequestException(
+                        `${name} (${section}): ${docs.join(' ')}`,
+                      ),
+                    );
+                  } else {
+                    reject(
+                      new BadRequestException(`${dispatchError.toString()}`),
+                    );
+                  }
+                }
+              }
               if (status.isFinalized) {
                 if (dispatchError) {
+                  unsub();
+
                   if (dispatchError.isModule) {
                     const decoded = this.api.registry.findMetaError(
                       dispatchError.asModule,
