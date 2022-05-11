@@ -47,7 +47,7 @@ export class MassbitStakingService implements OnModuleInit {
             `${registerDto.blockchain}.${registerDto.network}`,
           )
           .signAndSend(pair, ({ status, events = [], dispatchError }) => {
-            if (status.isInBlock) {
+            if (status.isFinalized) {
               if (dispatchError) {
                 if (dispatchError.isModule) {
                   const decoded = this.api.registry.findMetaError(
@@ -66,7 +66,7 @@ export class MassbitStakingService implements OnModuleInit {
                   );
                 }
               } else {
-                const blockHash = status.asInBlock.toString();
+                const blockHash = status.asFinalized.toString();
                 unsub();
                 resolve(blockHash);
               }
@@ -91,6 +91,7 @@ export class MassbitStakingService implements OnModuleInit {
     const newPair = keyring.addFromUri(stakingDto.memonic);
     this.logger.debug(`Handle staking provider with :>> ${newPair.address}`);
 
+    const nonce = await this.api.rpc.system.accountNextIndex(newPair.address);
     const excuteStaking = new Promise(async (resolve, reject) => {
       try {
         const unsub = await this.api.tx.dapi
@@ -98,34 +99,38 @@ export class MassbitStakingService implements OnModuleInit {
             stakingDto.providerId,
             `${stakingDto.amount}000000000000000000`,
           )
-          .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-            if (status.isInBlock) {
-              if (dispatchError) {
-                if (dispatchError.isModule) {
-                  const decoded = this.api.registry.findMetaError(
-                    dispatchError.asModule,
-                  );
-                  const { docs, name, section } = decoded;
+          .signAndSend(
+            newPair,
+            { nonce },
+            ({ status, events = [], dispatchError }) => {
+              if (status.isFinalized) {
+                if (dispatchError) {
+                  if (dispatchError.isModule) {
+                    const decoded = this.api.registry.findMetaError(
+                      dispatchError.asModule,
+                    );
+                    const { docs, name, section } = decoded;
 
-                  reject(
-                    new BadRequestException(
-                      `${name} (${section}): ${docs.join(' ')}`,
-                    ),
-                  );
+                    reject(
+                      new BadRequestException(
+                        `${name} (${section}): ${docs.join(' ')}`,
+                      ),
+                    );
+                  } else {
+                    reject(
+                      new BadRequestException(`${dispatchError.toString()}`),
+                    );
+                  }
                 } else {
-                  reject(
-                    new BadRequestException(`${dispatchError.toString()}`),
-                  );
+                  const blockHash = status.asFinalized.toString();
+                  unsub();
+                  resolve(blockHash);
                 }
-              } else {
-                const blockHash = status.asInBlock.toString();
                 unsub();
-                resolve(blockHash);
+                resolve(true);
               }
-              unsub();
-              resolve(true);
-            }
-          });
+            },
+          );
       } catch (error) {
         reject(new BadRequestException(error));
       }
@@ -148,7 +153,7 @@ export class MassbitStakingService implements OnModuleInit {
         const unsub = await this.api.tx.dapi
           .unregisterProvider(unRegisterDto.providerId)
           .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-            if (status.isInBlock) {
+            if (status.isFinalized) {
               if (dispatchError) {
                 if (dispatchError.isModule) {
                   const decoded = this.api.registry.findMetaError(
@@ -167,7 +172,7 @@ export class MassbitStakingService implements OnModuleInit {
                   );
                 }
               } else {
-                const blockHash = status.asInBlock.toString();
+                const blockHash = status.asFinalized.toString();
                 unsub();
                 resolve(blockHash);
               }
@@ -199,7 +204,7 @@ export class MassbitStakingService implements OnModuleInit {
             `${stakingDto.amount}000000000000000000`,
           )
           .signAndSend(newPair, ({ status, events = [], dispatchError }) => {
-            if (status.isInBlock) {
+            if (status.isFinalized) {
               if (dispatchError) {
                 if (dispatchError.isModule) {
                   const decoded = this.api.registry.findMetaError(
@@ -218,7 +223,7 @@ export class MassbitStakingService implements OnModuleInit {
                   );
                 }
               } else {
-                const blockHash = status.asInBlock.toString();
+                const blockHash = status.asFinalized.toString();
                 unsub();
                 resolve(blockHash);
               }
