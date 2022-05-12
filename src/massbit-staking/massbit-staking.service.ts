@@ -53,20 +53,20 @@ export class MassbitStakingService implements OnModuleInit {
             ({ status, events = [], dispatchError }) => {
               if (status.isInBlock) {
                 if (dispatchError) {
-                  unsub();
-
                   if (dispatchError.isModule) {
                     const decoded = this.api.registry.findMetaError(
                       dispatchError.asModule,
                     );
                     const { docs, name, section } = decoded;
 
+                    unsub();
                     reject(
                       new BadRequestException(
                         `${name} (${section}): ${docs.join(' ')}`,
                       ),
                     );
                   } else {
+                    unsub();
                     reject(
                       new BadRequestException(`${dispatchError.toString()}`),
                     );
@@ -154,9 +154,11 @@ export class MassbitStakingService implements OnModuleInit {
                   }
                 } else {
                   const blockHash = status.asFinalized.toString();
+
                   unsub();
                   resolve(blockHash);
                 }
+
                 unsub();
                 resolve(true);
               }

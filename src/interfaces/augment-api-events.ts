@@ -2,29 +2,10 @@
 /* eslint-disable */
 
 import type { ApiTypes } from '@polkadot/api-base/types';
-import type {
-  Bytes,
-  Null,
-  Option,
-  Result,
-  Vec,
-  u128,
-  u32,
-  u64,
-} from '@polkadot/types-codec';
+import type { Bytes, Null, Option, Result, Vec, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H256 } from '@polkadot/types/interfaces/runtime';
-import type {
-  DevnetRuntimeMassbitId,
-  FrameSupportTokensMiscBalanceStatus,
-  FrameSupportWeightsDispatchInfo,
-  PalletBlockRewardDistributionConfig,
-  PalletDapiProviderDeactivateReason,
-  PalletDapiProviderType,
-  PalletImOnlineSr25519AppSr25519Public,
-  SpFinalityGrandpaAppPublic,
-  SpRuntimeDispatchError,
-} from '@polkadot/types/lookup';
+import type { FrameSupportTokensMiscBalanceStatus, FrameSupportWeightsDispatchInfo, LocalRuntimeMassbitId, PalletBlockRewardDistributionConfig, PalletDapiProviderDeactivateReason, PalletDapiProviderType, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/events' {
   export interface AugmentedEvents<ApiType extends ApiTypes> {
@@ -54,10 +35,7 @@ declare module '@polkadot/api-base/types/events' {
        * Some balance was moved from the reserve of the first account to the second account.
        * Final argument indicates the destination balance type.
        **/
-      ReserveRepatriated: AugmentedEvent<
-        ApiType,
-        [AccountId32, AccountId32, u128, FrameSupportTokensMiscBalanceStatus]
-      >;
+      ReserveRepatriated: AugmentedEvent<ApiType, [AccountId32, AccountId32, u128, FrameSupportTokensMiscBalanceStatus]>;
       /**
        * Some amount was removed from the account (e.g. for misbehavior).
        **/
@@ -83,10 +61,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Distribution config has been updated.
        **/
-      DistributionConfigChanged: AugmentedEvent<
-        ApiType,
-        [PalletBlockRewardDistributionConfig]
-      >;
+      DistributionConfigChanged: AugmentedEvent<ApiType, [PalletBlockRewardDistributionConfig]>;
       /**
        * Generic event
        **/
@@ -95,28 +70,12 @@ declare module '@polkadot/api-base/types/events' {
     dapi: {
       ChainIdAdded: AugmentedEvent<ApiType, [Bytes]>;
       ChainIdRemoved: AugmentedEvent<ApiType, [Bytes]>;
-      ProjectDeposited: AugmentedEvent<ApiType, [DevnetRuntimeMassbitId, u128]>;
-      ProjectReachedQuota: AugmentedEvent<ApiType, [DevnetRuntimeMassbitId]>;
-      ProjectRegistered: AugmentedEvent<
-        ApiType,
-        [DevnetRuntimeMassbitId, AccountId32, Bytes, u128]
-      >;
-      ProviderActivated: AugmentedEvent<
-        ApiType,
-        [DevnetRuntimeMassbitId, PalletDapiProviderType]
-      >;
-      ProviderDeactivated: AugmentedEvent<
-        ApiType,
-        [
-          DevnetRuntimeMassbitId,
-          PalletDapiProviderType,
-          PalletDapiProviderDeactivateReason,
-        ]
-      >;
-      ProviderRegistered: AugmentedEvent<
-        ApiType,
-        [DevnetRuntimeMassbitId, PalletDapiProviderType, AccountId32, Bytes]
-      >;
+      ProjectDeposited: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, u128]>;
+      ProjectRegistered: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, AccountId32, Bytes, u128]>;
+      ProjectUsageUpdated: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, u128]>;
+      ProviderActivated: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, PalletDapiProviderType]>;
+      ProviderDeactivated: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, PalletDapiProviderType, PalletDapiProviderDeactivateReason]>;
+      ProviderRegistered: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, PalletDapiProviderType, AccountId32, Bytes]>;
       RegulatorAdded: AugmentedEvent<ApiType, [AccountId32]>;
       RegulatorRemoved: AugmentedEvent<ApiType, [AccountId32]>;
       /**
@@ -132,17 +91,11 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Delegator staked some funds on a provider.
        **/
-      Delegated: AugmentedEvent<
-        ApiType,
-        [AccountId32, DevnetRuntimeMassbitId, u128]
-      >;
+      Delegated: AugmentedEvent<ApiType, [AccountId32, LocalRuntimeMassbitId, u128]>;
       /**
        * Delegator unstaked some funds on a provider.
        **/
-      DelegatorUnstaked: AugmentedEvent<
-        ApiType,
-        [AccountId32, DevnetRuntimeMassbitId, u128]
-      >;
+      DelegatorUnstaked: AugmentedEvent<ApiType, [AccountId32, LocalRuntimeMassbitId, u128]>;
       /**
        * New staking era. Distribute era rewards to providers.
        **/
@@ -150,24 +103,15 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Payout to provider or delegator.
        **/
-      Payout: AugmentedEvent<
-        ApiType,
-        [AccountId32, DevnetRuntimeMassbitId, u32, u128]
-      >;
+      Payout: AugmentedEvent<ApiType, [AccountId32, LocalRuntimeMassbitId, u32, u128]>;
       /**
        * Provider has decreased its bond.
        **/
-      ProviderBondedLess: AugmentedEvent<
-        ApiType,
-        [DevnetRuntimeMassbitId, u128]
-      >;
+      ProviderBondedLess: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, u128]>;
       /**
        * Provider has increased its bond.
        **/
-      ProviderBondedMore: AugmentedEvent<
-        ApiType,
-        [DevnetRuntimeMassbitId, u128]
-      >;
+      ProviderBondedMore: AugmentedEvent<ApiType, [LocalRuntimeMassbitId, u128]>;
       /**
        * Account has withdrawn unbonded funds.
        **/
@@ -181,10 +125,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * New authority set has been applied.
        **/
-      NewAuthorities: AugmentedEvent<
-        ApiType,
-        [Vec<ITuple<[SpFinalityGrandpaAppPublic, u64]>>]
-      >;
+      NewAuthorities: AugmentedEvent<ApiType, [Vec<ITuple<[SpFinalityGrandpaAppPublic, u64]>>]>;
       /**
        * Current authority set has been paused.
        **/
@@ -198,25 +139,48 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
-    imOnline: {
+    identity: {
       /**
-       * At the end of the session, no offence was committed.
+       * A name was cleared, and the given balance returned.
        **/
-      AllGood: AugmentedEvent<ApiType, []>;
+      IdentityCleared: AugmentedEvent<ApiType, [AccountId32, u128]>;
       /**
-       * A new heartbeat was received from `AuthorityId`.
+       * A name was removed and the given balance slashed.
        **/
-      HeartbeatReceived: AugmentedEvent<
-        ApiType,
-        [PalletImOnlineSr25519AppSr25519Public]
-      >;
+      IdentityKilled: AugmentedEvent<ApiType, [AccountId32, u128]>;
       /**
-       * At the end of the session, at least one validator was found to be offline.
+       * A name was set or reset (which will remove all judgements).
        **/
-      SomeOffline: AugmentedEvent<
-        ApiType,
-        [Vec<ITuple<[AccountId32, AccountId32]>>]
-      >;
+      IdentitySet: AugmentedEvent<ApiType, [AccountId32]>;
+      /**
+       * A judgement was given by a registrar.
+       **/
+      JudgementGiven: AugmentedEvent<ApiType, [AccountId32, u32]>;
+      /**
+       * A judgement was asked from a registrar.
+       **/
+      JudgementRequested: AugmentedEvent<ApiType, [AccountId32, u32]>;
+      /**
+       * A judgement request was retracted.
+       **/
+      JudgementUnrequested: AugmentedEvent<ApiType, [AccountId32, u32]>;
+      /**
+       * A registrar was added.
+       **/
+      RegistrarAdded: AugmentedEvent<ApiType, [u32]>;
+      /**
+       * A sub-identity was added to an identity and the deposit paid.
+       **/
+      SubIdentityAdded: AugmentedEvent<ApiType, [AccountId32, AccountId32, u128]>;
+      /**
+       * A sub-identity was removed from an identity and the deposit freed.
+       **/
+      SubIdentityRemoved: AugmentedEvent<ApiType, [AccountId32, AccountId32, u128]>;
+      /**
+       * A sub-identity was cleared, and the given deposit repatriated from the
+       * main identity account to the sub-identity account.
+       **/
+      SubIdentityRevoked: AugmentedEvent<ApiType, [AccountId32, AccountId32, u128]>;
       /**
        * Generic event
        **/
@@ -245,10 +209,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A sudo just took place. \[result\]
        **/
-      SudoAsDone: AugmentedEvent<
-        ApiType,
-        [Result<Null, SpRuntimeDispatchError>]
-      >;
+      SudoAsDone: AugmentedEvent<ApiType, [Result<Null, SpRuntimeDispatchError>]>;
       /**
        * Generic event
        **/
@@ -262,17 +223,11 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * An extrinsic failed.
        **/
-      ExtrinsicFailed: AugmentedEvent<
-        ApiType,
-        [SpRuntimeDispatchError, FrameSupportWeightsDispatchInfo]
-      >;
+      ExtrinsicFailed: AugmentedEvent<ApiType, [SpRuntimeDispatchError, FrameSupportWeightsDispatchInfo]>;
       /**
        * An extrinsic completed successfully.
        **/
-      ExtrinsicSuccess: AugmentedEvent<
-        ApiType,
-        [FrameSupportWeightsDispatchInfo]
-      >;
+      ExtrinsicSuccess: AugmentedEvent<ApiType, [FrameSupportWeightsDispatchInfo]>;
       /**
        * An account was reaped.
        **/
@@ -303,10 +258,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * A call was dispatched.
        **/
-      DispatchedAs: AugmentedEvent<
-        ApiType,
-        [Result<Null, SpRuntimeDispatchError>]
-      >;
+      DispatchedAs: AugmentedEvent<ApiType, [Result<Null, SpRuntimeDispatchError>]>;
       /**
        * A single item within a Batch of dispatches has completed with no error.
        **/
@@ -317,14 +269,12 @@ declare module '@polkadot/api-base/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
     };
     validatorSet: {
-      /**
-       * New validator addition initiated. Effective in ~2 sessions.
-       **/
-      ValidatorAdditionInitiated: AugmentedEvent<ApiType, [AccountId32]>;
-      /**
-       * Validator removal initiated. Effective in ~2 sessions.
-       **/
-      ValidatorRemovalInitiated: AugmentedEvent<ApiType, [AccountId32]>;
+      CandidateAdded: AugmentedEvent<ApiType, [AccountId32, u128]>;
+      CandidateRemoved: AugmentedEvent<ApiType, [AccountId32]>;
+      CandidateSlashed: AugmentedEvent<ApiType, [AccountId32]>;
+      NewCandidacyBond: AugmentedEvent<ApiType, [u128]>;
+      NewDesiredCandidates: AugmentedEvent<ApiType, [u32]>;
+      NewInvulnerables: AugmentedEvent<ApiType, [Vec<AccountId32>]>;
       /**
        * Generic event
        **/

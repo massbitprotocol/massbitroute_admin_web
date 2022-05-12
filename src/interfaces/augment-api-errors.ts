@@ -5,6 +5,40 @@ import type { ApiTypes } from '@polkadot/api-base/types';
 
 declare module '@polkadot/api-base/types/errors' {
   export interface AugmentedErrors<ApiType extends ApiTypes> {
+    authorship: {
+      /**
+       * The uncle is genesis.
+       **/
+      GenesisUncle: AugmentedError<ApiType>;
+      /**
+       * The uncle parent not in the chain.
+       **/
+      InvalidUncleParent: AugmentedError<ApiType>;
+      /**
+       * The uncle isn't recent enough to be included.
+       **/
+      OldUncle: AugmentedError<ApiType>;
+      /**
+       * The uncle is too high in chain.
+       **/
+      TooHighUncle: AugmentedError<ApiType>;
+      /**
+       * Too many uncles.
+       **/
+      TooManyUncles: AugmentedError<ApiType>;
+      /**
+       * The uncle is already included.
+       **/
+      UncleAlreadyIncluded: AugmentedError<ApiType>;
+      /**
+       * Uncles already set in the block.
+       **/
+      UnclesAlreadySet: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     balances: {
       /**
        * Beneficiary account must pre-exist
@@ -130,15 +164,71 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    imOnline: {
+    identity: {
       /**
-       * Duplicated heartbeat.
+       * Account ID is already named.
        **/
-      DuplicatedHeartbeat: AugmentedError<ApiType>;
+      AlreadyClaimed: AugmentedError<ApiType>;
       /**
-       * Non existent public key.
+       * Empty index.
        **/
-      InvalidKey: AugmentedError<ApiType>;
+      EmptyIndex: AugmentedError<ApiType>;
+      /**
+       * Fee is changed.
+       **/
+      FeeChanged: AugmentedError<ApiType>;
+      /**
+       * The index is invalid.
+       **/
+      InvalidIndex: AugmentedError<ApiType>;
+      /**
+       * Invalid judgement.
+       **/
+      InvalidJudgement: AugmentedError<ApiType>;
+      /**
+       * The target is invalid.
+       **/
+      InvalidTarget: AugmentedError<ApiType>;
+      /**
+       * Judgement given.
+       **/
+      JudgementGiven: AugmentedError<ApiType>;
+      /**
+       * No identity found.
+       **/
+      NoIdentity: AugmentedError<ApiType>;
+      /**
+       * Account isn't found.
+       **/
+      NotFound: AugmentedError<ApiType>;
+      /**
+       * Account isn't named.
+       **/
+      NotNamed: AugmentedError<ApiType>;
+      /**
+       * Sub-account isn't owned by sender.
+       **/
+      NotOwned: AugmentedError<ApiType>;
+      /**
+       * Sender is not a sub-account.
+       **/
+      NotSub: AugmentedError<ApiType>;
+      /**
+       * Sticky judgement.
+       **/
+      StickyJudgement: AugmentedError<ApiType>;
+      /**
+       * Too many additional fields.
+       **/
+      TooManyFields: AugmentedError<ApiType>;
+      /**
+       * Maximum amount of registrars reached. Cannot add any more.
+       **/
+      TooManyRegistrars: AugmentedError<ApiType>;
+      /**
+       * Too many subs-accounts.
+       **/
+      TooManySubAccounts: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -187,7 +277,7 @@ declare module '@polkadot/api-base/types/errors' {
       CallFiltered: AugmentedError<ApiType>;
       /**
        * Failed to extract the runtime version from the new runtime.
-       *
+       * 
        * Either calling `Core_version` or decoding `RuntimeVersion` failed.
        **/
       FailedToExtractRuntimeVersion: AugmentedError<ApiType>;
@@ -225,22 +315,15 @@ declare module '@polkadot/api-base/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
     validatorSet: {
-      /**
-       * Only the validator can add itself back after coming online.
-       **/
-      BadOrigin: AugmentedError<ApiType>;
-      /**
-       * Validator is already in the validator set.
-       **/
-      Duplicate: AugmentedError<ApiType>;
-      /**
-       * Target (post-removal) validator count is below the minimum.
-       **/
-      TooLowValidatorCount: AugmentedError<ApiType>;
-      /**
-       * Validator is not approved for re-addition.
-       **/
-      ValidatorNotApproved: AugmentedError<ApiType>;
+      AlreadyCandidate: AugmentedError<ApiType>;
+      AlreadyInvulnerable: AugmentedError<ApiType>;
+      NoAssociatedValidatorId: AugmentedError<ApiType>;
+      NotCandidate: AugmentedError<ApiType>;
+      Permission: AugmentedError<ApiType>;
+      TooFewCandidates: AugmentedError<ApiType>;
+      TooManyCandidates: AugmentedError<ApiType>;
+      Unknown: AugmentedError<ApiType>;
+      ValidatorNotRegistered: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
