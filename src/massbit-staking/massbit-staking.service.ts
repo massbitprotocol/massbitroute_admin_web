@@ -32,7 +32,7 @@ export class MassbitStakingService implements OnModuleInit {
     const keyring = new Keyring({ type: 'sr25519' });
     keyring.setSS58Format(42);
 
-    const pair = keyring.addFromUri(`${ADMIN_MNEMONIC}//${ADMIN_DERIVATION}`);
+    const pair = keyring.addFromUri(`${ADMIN_MNEMONIC}${ADMIN_DERIVATION}`);
     this.logger.debug(
       `Handle register provider with admin :>> ${pair.address}`,
     );
