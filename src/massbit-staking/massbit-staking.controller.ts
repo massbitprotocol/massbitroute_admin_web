@@ -39,10 +39,11 @@ export class MassbitStakingController {
     @Res() res: Response,
     @Body() stakingDto: StakingDto,
   ): Promise<any> {
-    await this.stakingService.stakingProvider(stakingDto);
+    const result = await this.stakingService.stakingProvider(stakingDto);
 
     return res.json({
       status: 'success',
+      data: result,
     });
   }
 
